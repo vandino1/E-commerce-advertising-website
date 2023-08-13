@@ -1,0 +1,155 @@
+﻿@model IEnumerable<ADVERTISEMENT.Models.Advertisement>
+
+@{
+    ViewData["Title"] = "Tin quảng cáo xem nhiều";
+
+    <style>
+        .product-count {
+            color: black;
+            padding: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+    </style>
+
+    <style>
+        h2 span.view {
+            color: #808080;
+            font-size: 18px;
+        }
+    </style>
+
+}
+<div class="col-sm-12">
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+</div>
+<h2>Danh sách<span class="view"> Quảng cáo nhiều lượt xem</span></h2>
+
+<span id="Message_delete" class="d-none">@TempData["Message_delete"]</span>
+<span id="Message_error" class="d-none">@TempData["Message_error"]</span>
+
+<table class="table table-bordered table-hover text-center" id="productTable">
+    <thead>
+        <tr class="bg-info">
+            <th>STT</th>
+            <th>
+                @Html.DisplayNameFor(model => model.title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.viewCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.priceSale)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.featureItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isSale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.image)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count() > 0)
+        {
+            int i = 1;
+
+            @foreach (var item in Model)
+            {
+
+                var strCheck_feature = item.featureItem ? "<a href='#' ><i class='bi bi-check-lg text-success'></i></a>" : "<a href='#' ><i class='bi bi-x-lg text-danger'></i></a>";
+                var strCheck_isSale = item.isSale ? "<a href='#' ><i class='bi bi-check-lg text-success'></i></a>" : "<a href='#' ><i class='bi bi-x-lg text-danger'></i></a>";
+                <tr>
+                    <td>@i</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.brand)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.viewCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.priceSale)
+                    </td>
+
+                    <td>
+                        @Html.Raw(strCheck_feature)
+                    </td>
+                    <td>
+                        @Html.Raw(strCheck_isSale)
+                    </td>
+
+                    <td>
+                        <img src="~/images/@Html.DisplayFor(modelItem => item.image)" width="100" />
+                    </td>
+
+                </tr>
+                i++;
+            }
+        }
+    </tbody>
+</table>
+
+<div class="product-count">
+    <p>Tổng số bản ghi: @Model.Count()</p>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var message = $('#Message_delete').text();
+            if (message !== '') {
+                toastr.warning(message);
+            }
+
+        });
+        $(document).ready(function () {
+            var message = $('#Message_error').text();
+            if (message !== '') {
+                toastr.error(message);
+            }
+
+        });
+
+        $(document).ready(function () {
+            $('#checkAll').click(function () {
+                $('.checkbox').prop('checked', $(this).prop('checked'));
+            });
+        });
+
+    </script>
+}
+

@@ -1,0 +1,46 @@
+﻿@model ADVERTISEMENT.Models.Rely
+
+@{
+    ViewData["Title"] = "Chi tiết phản hồi";
+}
+
+<div class="nav">
+    <ol class="breadcrumb float-xl-left">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+</div>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.createDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.createDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.mainContent)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.mainContent)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Comment.commentId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.replyId" class="btn btn-warning">Cập nhật</a> |
+    <a asp-action="Index" class="btn btn-info">Trở lại danh sách</a>
+</div>

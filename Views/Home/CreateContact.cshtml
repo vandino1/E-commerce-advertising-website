@@ -1,0 +1,80 @@
+﻿@model ADVERTISEMENT.Models.Contact
+
+@{
+    ViewData["Title"] = "Tạo mới liên hệ";
+}
+<div class="nav">
+    <ol class="breadcrumb float-xl-left">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CreateContact" id="myForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input type="text" name="name" class="form-control" required placeholder="Họ và tên" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="email" class="control-label"></label>
+                <input type="email" name="email" class="form-control" required placeholder="Email" />
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="phoneNumber" class="control-label"></label>
+                <input type="tel" name="phoneNumber" pattern="^[0][0-9]+$" class="form-control" required placeholder="Số điện thoại" />
+                <span asp-validation-for="phoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="mainContent" class="control-label"></label> (*)
+                <textarea rows="6" cols="20" name="mainContent" class="form-control" placeholder="Viết nội dung bạn muốn..." required></textarea>
+                <span asp-validation-for="mainContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" name="UserId" value="@ViewData["customerId"]" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" style="font-size: 18px;">Gửi liên hệ</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*pattern="[0-9]{10}":yêu cầu người dùng nhập đúng 10 chữ số.*@
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $("#myForm").validate({
+            rules: {
+                phoneNumber: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10,                  
+                    digits: true,
+                    startsWithZero: true
+                }
+            },
+            messages: {
+                phoneNumber: {
+                    required: "Vui lòng nhập số điện thoại",
+                    minlength: "Số điện thoại phải có ít nhất 10 chữ số",
+                    maxlength: "Số điện thoại không được quá 10 chữ số",                   
+                    digits: "Số điện thoại phải là số"
+                }
+            }
+        });
+        $.validator.addMethod("startsWithZero", function (value, element) {
+            return this.optional(element) || /^0/.test(value);
+        }, "Số điện thoại phải bắt đầu bằng số 0.");
+
+    </script>
+}
+
+

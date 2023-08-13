@@ -1,0 +1,225 @@
+﻿@model IEnumerable<ADVERTISEMENT.Models.Advertisement>
+
+@{
+    ViewData["Title"] = "Lọc quảng cáo theo giá";
+
+}
+<div class="nav">
+    <ol class="breadcrumb float-xl-left">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+</div>
+<form asp-controller="Advertisements" asp-action="Filter" method="get">
+    <label>Phạm vi giá:</label>
+    <input type="number" name="minPrice" placeholder="Giá tối thiểu">
+    <input type="number" name="maxPrice" placeholder="Giá tối đa">
+    <button type="submit">Lọc dữ liệu</button>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Tạo mới</a>
+</p>
+
+<span id="Message_create" class="d-none">@TempData["Message_create"]</span>
+<span id="Message_edit" class="d-none">@TempData["Message_edit"]</span>
+<span id="Message_delete" class="d-none">@TempData["Message_delete"]</span>
+<span id="Message_error" class="d-none">@TempData["Message_error"]</span>
+
+<hr />
+<form asp-controller="Advertisements" asp-action="Index" method="get">
+    <p>
+        Nhập nội dung: <input type="text" name="SearchString" placeholder="Thương hiệu, từ khóa, danh mục" value="@ViewData["CurrentFilter"]" style="width:300px" />
+        <button class="btn btn-primary text-light" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button> |
+        <a asp-action="Index" class="btn btn-warning text-dark"><i class="bi bi-arrow-counterclockwise"></i>Tất cả quảng cáo</a>
+</form>
+
+<form asp-controller="Advertisements" asp-action="DeleteMultiple" method="post">
+    <button type="submit" class="btn btn-danger"><i class="bi bi-x-octagon"></i> Xóa tất cả</button>
+    <hr />
+    <table class="table table-bordered table-hover text-center" id="productTable">
+        <thead>
+            <tr class="bg-info">
+                <th><input type="checkbox" id="checkAll" /></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.createDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.updateDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.createBy)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.keyword)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.postingFee)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.priceSale)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.featureItem)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.isSale)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.image)
+                </th>
+                <th>Sửa</th>
+                <th>Chi tiết</th>
+                <th>Xóa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var strCheck_status = item.status ? "<a href='#' ><i class='bi bi-check-lg text-success'></i></a>" : "<a href='#' ><i class='bi bi-x-lg text-danger'></i></a>";
+                var strCheck_feature = item.featureItem ? "<a href='#' ><i class='bi bi-check-lg text-success'></i></a>" : "<a href='#' ><i class='bi bi-x-lg text-danger'></i></a>";
+                var strCheck_isSale = item.isSale ? "<a href='#' ><i class='bi bi-check-lg text-success'></i></a>" : "<a href='#' ><i class='bi bi-x-lg text-danger'></i></a>";
+                <tr>
+                    <td><input class="checkbox" type="checkbox" name="selectedIds" value="@item.advertisementId" /></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.updateDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createBy)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.keyword)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.postingFee)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.priceSale)
+                    </td>
+                    <td>
+                        @Html.Raw(strCheck_status)
+                    </td>
+                    <td>
+                        @Html.Raw(strCheck_feature)
+                    </td>
+                    <td>
+                        @Html.Raw(strCheck_isSale)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location.name)
+                    </td>
+                    <td>
+                        <img src="~/images/@Html.DisplayFor(modelItem => item.image)" width="100" />
+                    </td>
+                    <td class="col-auto">
+                        <a asp-action="Edit" asp-route-id="@item.advertisementId" class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                    </td>
+                    <td class="col-auto">
+                        <a asp-action="Details" asp-route-id="@item.advertisementId" class="btn btn-info btn-sm"><i class="bi bi-sliders"></i></a>
+                    </td>
+                    <td class="col-auto">
+                        <a asp-action="Delete" asp-route-id="@item.advertisementId" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var message = $('#Message_create').text();
+            if (message !== '') {
+                toastr.success(message);
+            }
+
+        });
+        $(document).ready(function () {
+            var message = $('#Message_edit').text();
+            if (message !== '') {
+                toastr.info(message);
+            }
+
+        });
+        $(document).ready(function () {
+            var message = $('#Message_delete').text();
+            if (message !== '') {
+                toastr.warning(message);
+            }
+
+        });
+        $(document).ready(function () {
+            var message = $('#Message_error').text();
+            if (message !== '') {
+                toastr.error(message);
+            }
+
+        });
+
+        $(document).ready(function () {
+            $('#checkAll').click(function () {
+                $('.checkbox').prop('checked', $(this).prop('checked'));
+            });
+        });
+
+
+            $(document).ready(function () {
+                // Lắng nghe sự kiện submit form
+                $('#filter-form').submit(function (e) {
+                    // Ngăn chặn hành động mặc định của form
+                    e.preventDefault();
+
+                    // Lấy giá trị của khoảng giá trị được chọn
+                    var minPrice = $('input[name="minPrice"]').val();
+                    var maxPrice = $('input[name="maxPrice"]').val();
+
+                    // Gửi AJAX request để lọc các mục theo khoảng giá trị
+                    $.ajax({
+                        url: '/items/filter',
+                        method: 'POST',
+                        data: {
+                            minPrice: minPrice,
+                            maxPrice: maxPrice
+                        },
+                        success: function (response) {
+                            // Cập nhật danh sách mục với kết quả trả về từ server
+                            $('#item-list').html(response);
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                });
+            });
+    </script>
+}
+

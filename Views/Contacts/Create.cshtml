@@ -1,0 +1,45 @@
+﻿@model ADVERTISEMENT.Models.Contact
+
+@{
+    ViewData["Title"] = "Tạo mới liên hệ";   
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input name="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="email" class="control-label"></label>
+                <input name="email" class="form-control" />
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="phoneNumber" class="control-label"></label>
+                <input name="phoneNumber" class="form-control" />
+                <span asp-validation-for="phoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="mainContent" class="control-label"></label>
+                <textarea rows="6" name="mainContent" class="form-control"></textarea>              
+                <span asp-validation-for="mainContent" class="text-danger"></span>
+            </div>          
+            <div class="form-group">   
+                <input  name="customerId" value="@Model?.customerId" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Tạo mới" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

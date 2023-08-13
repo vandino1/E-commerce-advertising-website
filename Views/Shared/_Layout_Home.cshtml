@@ -1,0 +1,422 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <!-- Bootstrap Font Icon CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-
+     alpha/css/bootstrap.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <!--Toastr-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+    <!--Icon font-awesome-->
+    <script src="https://kit.fontawesome.com/79badda595.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-LUZPg7HuX0i7oOpIpw+x1u+JGQ78y4a0ablgILM4OFa+CpkXJPxvwOL/7IJiZw4x2XgJ/7b8uc2kFny1DnY/QQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        div {
+            padding: 4px 0px;
+        }
+
+        body {
+            background-color: #f3f3f3;
+        }
+
+        nav.navbar {
+            background-color: #ffd400;
+            font-size: 18px;
+        }
+
+        a.see:hover {
+            background-color: dodgerblue;
+            color: #ffffff;
+        }
+
+        li:hover {
+            color: black;
+            font-family: Arial;
+        }
+
+        a.home {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Segoe UI';
+            font-style: italic;
+        }
+
+        input.search {
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        div.form_search {
+            text-align: center;
+            padding: 0px 20px;
+        }
+
+        h3.Ohwow {
+            text-align: justify;
+            color: #ff6a00;
+            font-size: 25px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-family: sans-serif;
+        }
+
+        span.shop {
+            color: black;
+        }
+
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 70px;
+            right: 165px;
+            display: none;
+            border-radius: 15px;
+        }
+
+        .call {
+            position: fixed;
+            bottom: 30px;
+            right: 10px;
+            z-index: 999999;
+            border-radius: 10px 10px;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+        }
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+            .slide.active {
+                opacity: 1;
+            }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .prev,
+        .next {
+            display: inline-block;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            margin-right: 10px;
+            cursor: pointer;
+            padding-bottom: 50px;
+        }
+
+            .prev:hover,
+            .next:hover {
+                background-color: #555;
+            }
+
+        .controls button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 8px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .prev {
+            left: 0;
+        }
+
+        .next {
+            right: 0;
+        }
+
+        .controls button:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="slider">
+            <img class="slide" src="~/images/carousel/02.jpg" alt="Image 2">
+            <img class="slide" src="~/images/carousel/01.jpg" alt="Image 1">
+            <img class="slide" src="~/images/carousel/03.jpg" alt="Image 3">
+            <img class="slide" src="~/images/carousel/04.jpg" alt="Image 4">
+            <div class="controls">
+                <button class="prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="call">
+            <button class="scroll-top-btn"><i class="bi bi-arrow-up-circle"></i></button>
+        </div>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand text-dark active home" asp-area="" asp-controller="Home" asp-action="Index" title="Trang chủ quảng cáo"><i class="bi bi-house-gear"></i> TRANG CHỦ</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        &nbsp;
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin") || User.IsInRole("NhanVien"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark active" asp-controller="Advertisements" asp-action="Index" title="Quản lý tác vụ"><i class="bi bi-gear-wide-connected"></i> QUẢN LÝ</a>
+                            </li>
+                        }
+                        &nbsp;&nbsp;&nbsp;
+                        <li class="nav-item text-end">
+                            <a class="nav-link text-dark active" asp-controller="Home" asp-action="IntroCompany" title="Xem tin đã lưu"><i class="bi bi-person"></i> Giới thiệu</a>
+                        </li>
+                        <li class="nav-item text-end">
+                            <a class="nav-link text-dark active" asp-controller="Home" asp-action="CreateContact" title="Xem danh sách liên hệ"><i class="fa fa-fw fa-envelope"></i> Liên hệ</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <a class="nav-link text-light active btn btn-success" asp-controller="Home" asp-action="CreateAdvertisement" title="Đăng tin"><i class="bi bi-plus-square"></i> Đăng tin</a>
+                &nbsp;
+                <div class="dropdown">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="bi bi-journal-plus"></i><span style="font-size:19px;"> Quản lý tin</span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="nav-link active see" asp-controller="Home" asp-action="Seenew" title="Xem tin đã lưu"><i class="bi bi-eye"></i> Xem tin đã lưu</a>
+                        <a class="nav-link active see" asp-controller="Advertisements" asp-action="ListPostedNew" title="Quản lý tin đăng"><i class="bi bi-eyeglasses"></i> Xem tin đăng</a>
+                    </div>
+                </div>
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+        <marquee scrollamount="10">
+            OHWOW - Tạo sức mạnh cho doanh nghiệp của bạn trực tuyến - Hôm nay là ngày:
+            <script>
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = mm + '/' + dd + '/' + yyyy;
+                document.write(today);
+            </script>
+        </marquee>
+
+        <div class="form_search container">
+            <h3 class="Ohwow container">OHWOW<span class="shop">SHOP</span></h3>
+            <form asp-controller="Home" asp-action="HomeSearch" method="get">
+                <input class="search" type="text" placeholder=" Nhập từ khóa, thương hiệu, danh mục cần tìm..." name="SearchString" value="@ViewData["CurrentFilter"]" style="width:450px; height:37px" required>
+                <button class="" type="submit" title="Tìm tin quảng cáo"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+
+    </header>
+    <hr style="border: 1px solid rgba(0, 0, 0, 0.2)" />
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="row">
+                <div class="col-2">
+                    @await Component.InvokeAsync("Categories")                
+                </div>           
+                <div class="col">
+                    @RenderBody()                
+                </div>               
+            </div>
+        </main>
+    </div>
+    <!-- Remove the container if you want to extend the Footer to full width. -->
+    <div class="container-fluid my-5">
+
+        <!-- Footer -->
+        <footer class="text-center text-lg-start text-white"
+                style="background-color: #1c2331">
+            <!-- Section: Social media -->
+            <section class="d-flex justify-content-between p-4"
+                     style="background-color: #0094ff">
+                <!-- Left -->
+                <div class="me-5">
+                    <span>Kết nối với chúng tôi trên các mạng xã hội</span>
+                </div>
+                <!-- Left -->
+                <!-- Right -->
+                <div>
+                    <a href="" class="text-white me-4">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="" class="text-white me-4">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="" class="text-white me-4">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="" class="text-white me-4">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="" class="text-white me-4">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="" class="text-white me-4">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+                <!-- Right -->
+            </section>
+            <!-- Section: Social media -->
+            <!-- Section: Links  -->
+            <section class="">
+                <div class="container text-center text-md-start mt-5">
+                    <!-- Grid row -->
+                    <div class="row mt-3">
+                        <!-- Grid column -->
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <!-- Content -->
+                            <h6 class="text-uppercase fw-bold">CÔNG TY TNHH AT CORPORATION</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                - Kinh doanh: 108, Hồng Hà, Phường 2, Tân Bình, TpHCM
+                            </p>
+                            <p>
+                                - Văn phòng: 118/2, Long Thạnh, Long Trì, Châu Thành, Long An
+                            </p>
+                            <p>
+                                - Điện thoại: 03.38.37.88.79
+                            </p>
+                            <p>
+                                - Email: ifsoft@live.com
+                            </p>
+
+                        </div>
+                        <!-- Grid column -->
+                        <!-- Grid column -->
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold">LĨNH VỰC KINH DOANH</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                <a href="#!" class="text-white">Giáo dục điện tử</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Gia công phần mềm</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Cho thuê Giải pháp</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Kỹ năng sống</a>
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+                        <!-- Grid column -->
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold">CHÚNG TÔI</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                <a href="#!" class="text-white">Hồ sơ năng lực</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Đội ngũ</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Hình ảnh</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Tin tức</a>
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+                        <!-- Grid column -->
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold">Thông tin cá nhân</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p><i class="fas fa-home mr-3"></i> Chợ mới district, An Giang province</p>
+                            <p><i class="fas fa-envelope mr-3"></i> vvdi_20th@student.agu.edu.vn</p>
+                            <p><i class="fas fa-phone mr-3"></i> + 0923100121</p>
+                            <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+                        </div>
+                        <!-- Grid column -->
+                    </div>
+                    <!-- Grid row -->
+                </div>
+            </section>
+            <!-- Section: Links  -->
+            <!-- Copyright -->
+            <div class="text-center p-3"
+                 style="background-color: rgba(0, 0, 0, 0.2)">
+                © 2020 Copyright:
+                <a class="text-white" href="https://mdbootstrap.com/">Võ Văn Dĩ.</a>
+            </div>
+            <!-- Copyright -->
+
+        </footer>
+        <!-- Footer -->
+    </div>
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" charset="utf8" src="https:////cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

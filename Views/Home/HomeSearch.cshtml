@@ -1,0 +1,303 @@
+﻿@model IEnumerable<ADVERTISEMENT.Models.Advertisement>
+
+@{
+    ViewData["Title"] = "Tìm tin quảng cáo";
+    <style>
+        .sanpham_box .anh {
+            max-height: 150px;
+            overflow: hidden;
+        }
+
+        .product_price span {
+            font-size: 12px;
+            margin-left: 10px;
+            color: #b5aec4;
+            text-decoration: line-through;
+        }
+
+        .product_price {
+            font-size: 18px;
+            color: red;
+            font-weight: bold;
+        }
+
+        .product_info {
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .product_bubble {
+            position: absolute;
+            top: 1px;
+            width: 50px;
+            height: 25px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            color: white;
+            font-size: 12px;
+        }
+
+        .product_bubble_right {
+            right: 5px;
+        }
+
+        .product_bubble_left {
+            left: 5px;
+        }
+
+        .product_bubble_red {
+            background: #fe4c50;
+        }
+
+        .d-flex {
+            display: -ms-flexbox !important;
+            display: flex !important;
+        }
+
+        .flex-column {
+            -ms-flex-direction: column !important;
+            flex-direction: column !important;
+        }
+
+        .align-items-center {
+            -ms-flex-align: center !important;
+            align-items: center !important;
+        }
+
+        .product_bubble_green {
+            background: green;
+        }
+
+        h2.color_sale {
+            color: #aa7e32;
+        }
+
+        h2.new {
+            color: blue;
+        }
+
+        h2.most {
+            color: green;
+        }
+
+        .zoom {
+            padding: 1px;
+            background-color: white;
+            transition: transform .2s; /* Animation */
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+            .zoom:hover {
+                transform: scale(1.15); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+            }
+
+        h5.title:hover {
+            color: #288ad6;
+        }
+
+        .checkbox-container {
+            display: inline-block;
+        }
+
+            .checkbox-container form {
+                display: inline-block;
+                margin-right: 20px;
+            }
+
+                .checkbox-container form:last-child {
+                    margin-right: 0;
+                }
+
+        label.text:hover {
+            color: blue;
+        }
+        button.compare-button {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px solid #2f80ed;
+            background-color: #2f80ed;
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;
+            float: right;
+            border-radius: 10px;
+        }
+
+            button.compare-button:hover {
+                background-color: #fff;
+                color: #2f80ed;
+            }
+
+        button.delete:hover {
+            background-color: red;
+            color: #fff;
+        }
+
+        button.delete {
+            display: inline-block;
+            padding: 10px 20px;
+            color: red;
+            border: none;
+            font-size: 18px;
+            text-decoration: none;
+            float: right;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .call {
+            position: fixed;
+            bottom: 30px;
+            right: 10px;
+            z-index: 999999;
+            border-radius: 10px 10px;
+        }
+
+            .call a {
+                text-decoration: none;
+                font-size: 19px;
+                color: white;
+            }
+
+        div.compare {
+            color: #2f80ed;
+            font-size: 16px;
+            line-height: 16px;
+            margin-left: 10px;
+        }
+        .card-title {
+            height: 2.5em; /* giới hạn chiều cao */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* số dòng cần hiển thị */
+            -webkit-box-orient: vertical;
+        }
+    </style>
+}
+<div class="call">
+    <button class="compare-button" id="compare-button">So sánh ngay</button>
+    <br />
+    <button class="delete" id="delete-all-ads-button" onclick="clearSelectedAds()">Xóa tất cả tin</button>
+</div>
+
+<div class="nav">
+    <ol class="breadcrumb float-xl-left">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+</div>
+<h5>Kết quả tìm kiếm cho từ khóa "<span>@ViewBag.searchString</span>"</h5>
+<p>Tìm thấy <strong>@ViewBag.TotalAdvertisements</strong> tin quảng cáo</p>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model.Where(n => n.status == true))
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <a asp-action="Details" asp-route-id="@item.advertisementId" class="text-center"><img class="zoom" style="max-height: 200px; overflow: hidden;" src="~/images/@Html.DisplayFor(modelItem => item.image)" title="@Html.DisplayFor(modelItem => item.title)" /></a>
+                    @if (item.featureItem == true)
+                    {
+                        <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>
+                    }
+                    @if (item.priceSale > 0)
+                    {
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+                    }
+                    <div class="card-body">
+                        <a class="text-dark" style="text-decoration:none;" asp-action="Details" asp-route-id="@item.advertisementId"><h5 class="card-title text-center title">@Html.DisplayFor(modelItem => item.title)</h5></a>
+                        <div class="product_info">
+                            @if (item.priceSale > 0)
+                            {
+                                <div class="product_price">@Html.DisplayFor(modelItem => item.priceSale)<span>@Html.DisplayFor(modelItem => item.price)</span></div>
+
+                            }
+                            else
+                            {
+                                <div class="product_price text-center">@Html.DisplayFor(modelItem => item.price)</div>
+
+                            }
+                        </div>
+                        <div class="text-warning">@Html.DisplayFor(modelItem => item.adverageRating) <i class="bi bi-star-fill"></i></div>
+                    </div>
+                    <div class="compare">
+                        <input id="ad-@item.advertisementId" type="checkbox" name="selectedAds" value="@item.advertisementId" />
+                        <label for="ad-@item.advertisementId" class="added-to-compare">So sánh</label>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+@section Scripts{
+    <script>
+        //So sánh tin quảng cáo bằng javascript
+        var selectedAds = [];
+
+        $('input[type=checkbox][name=selectedAds]').change(function () {
+            if (this.checked) {
+                selectedAds.push(parseInt(this.value));
+            } else {
+                selectedAds.splice(selectedAds.indexOf(parseInt(this.value)), 1);
+            }
+        });
+
+        $('#compare-button').click(function () {
+            if (selectedAds.length >= 4) {
+                alert("Cho phép so sánh tối đa 3 quảng cáo!");
+                return;
+            }
+            if (selectedAds.length > 0 && selectedAds.length >= 2) {
+                window.location.href = '/Home/Compare?ids=' + selectedAds.join(',');
+            } else {
+                alert("Vui lòng chọn ít nhất 2 quảng cáo để so sánh!");
+            }
+
+        });
+        //Thay đổi textcheckbox
+        // Lấy tất cả các checkbox và label trong danh sách quảng cáo
+        var checkboxes = document.querySelectorAll('input[name="selectedAds"]');
+        var labels = document.querySelectorAll('label[for^="ad-"]');
+
+        // Lắng nghe sự kiện "change" của các checkbox
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function (event) {
+                // Lấy label tương ứng của checkbox
+                var label = document.querySelector('label[for="' + event.target.id + '"]');
+
+                // Nếu checkbox được chọn, đổi nội dung của label thành "Đã thêm so sánh"
+                if (event.target.checked) {
+                    label.textContent = 'Đã thêm so sánh';
+                }
+                // Ngược lại, đổi nội dung của label thành "So sánh"
+                else {
+                    label.textContent = 'So sánh';
+                }
+            });
+        });
+        //Xóa tất cả các checkbox
+        $("#delete-all-ads-button").click(function () {
+            var selectedAds = $("input[name='selectedAds']");
+            if (selectedAds.filter(":checked").length > 0) {
+                selectedAds.prop('checked', false);
+                $('label.added-to-compare').text('So sánh');
+                alert("Đã xóa các check thành công!");
+            } else {
+                alert("Vui lòng chọn ít nhất một quảng cáo để xóa!");
+            }
+        });
+        function clearSelectedAds() {
+            selectedAds.splice(0, selectedAds.length);
+        }
+
+    </script>
+}
+
+
+

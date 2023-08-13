@@ -1,0 +1,114 @@
+﻿@model List<Advertisement>
+
+@{
+    ViewData["Title"] = "So sánh tin quảng cáo";
+    <style>
+        td img {
+            width: 95%;
+            height: 200px;
+            object-fit: contain;
+            
+        }
+    </style>
+}
+
+<h1 class="display-5 my-4 text-center">So sánh tin quảng cáo</h1>
+<div class="container">
+    <div class="col-md-12 mx-auto">
+        <table class="table bg-light">
+            <tr>
+                <th>Hình ảnh</th>
+                @foreach (var ad in Model)
+                {
+                    <td>
+                        <img src="~/images/@Html.DisplayFor(modelItem => ad.image)" />
+                    </td>
+                }
+            </tr>
+            <tr>
+                <th>Tiêu đề</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.title</td>
+                }
+            </tr>
+            <tr>
+                <th>Giá</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.price.ToString("n0") đ</td>
+                }
+            </tr>
+            <tr>
+                <th>Giá giảm</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.priceSale.ToString("n0") đ</td>
+                }
+            </tr>
+            <tr>
+                <th>Lượt xem</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.viewCount</td>
+                }
+            </tr>
+            <tr>
+                <th>Rating</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.adverageRating <i class="bi bi-star-fill"></i></td>
+                }
+            </tr>
+            <tr>
+                <th>Nổi bật</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.featureItem</td>
+                }
+            </tr>
+            <tr>
+                <th>Ngày ra mắt</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.createDate</td>
+                }
+            </tr>
+            <tr>
+                <th>Thương hiệu</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.brand</td>
+                }
+            </tr>
+            <tr>
+                <th>Danh mục</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.Category.name</td>
+                }
+            </tr>
+            <tr>
+                <th>Từ khóa</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.keyword</td>
+                }
+            </tr>
+            <tr>
+                <th>Địa chỉ</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.Location.name</td>
+                }
+            </tr>
+            <tr>
+                <th>Người đăng</th>
+                @foreach (var ad in Model)
+                {
+                    <td>@ad.createBy</td>
+                }
+            </tr>
+        </table>
+    </div>
+</div>

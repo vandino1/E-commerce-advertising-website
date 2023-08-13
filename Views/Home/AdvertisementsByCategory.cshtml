@@ -1,0 +1,255 @@
+﻿@model IEnumerable<ADVERTISEMENT.Models.Advertisement>
+
+@{
+    ViewData["Title"] = "Danh mục quảng cáo";
+    <style>
+        .sanpham_box .anh {
+            max-height: 150px;
+            overflow: hidden;
+        }
+
+        .product_price span {
+            font-size: 12px;
+            margin-left: 10px;
+            color: #b5aec4;
+            text-decoration: line-through;
+        }
+
+        .product_price {
+            font-size: 18px;
+            color: red;
+            font-weight: bold;
+        }
+
+        .product_info {
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .product_bubble {
+            position: absolute;
+            top: 1px;
+            width: 50px;
+            height: 25px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            color: white;
+            font-size: 12px;
+        }
+
+        .product_bubble_right {
+            right: 5px;
+        }
+
+        .product_bubble_left {
+            left: 5px;
+        }
+
+        .product_bubble_red {
+            background: #fe4c50;
+        }
+
+        .d-flex {
+            display: -ms-flexbox !important;
+            display: flex !important;
+        }
+
+        .flex-column {
+            -ms-flex-direction: column !important;
+            flex-direction: column !important;
+        }
+
+        .align-items-center {
+            -ms-flex-align: center !important;
+            align-items: center !important;
+        }
+
+        .product_bubble_green {
+            background: green;
+        }
+
+        .section_title::after {
+            display: block;
+            position: absolute;
+            top: calc(100% + 1px);
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            -moz-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            transform: translateX(-50%);
+            width: 60px;
+            height: 5px;
+            background: #fe4c50;
+            content: '';
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        h2.color_sale {
+            color: #aa7e32;
+        }
+
+        h2.new {
+            color: blue;
+        }
+
+        h2.most {
+            color: green;
+        }
+
+        .benefit_row {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .benefit_col {
+            margin-bottom: 15px;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .benefit_item {
+            height: 100px;
+            background: #f3f3f3;
+            border-right: solid 1px #FFFFFF;
+            padding-left: 25px;
+        }
+
+        .align-items-center {
+            -ms-flex-align: center !important;
+            align-items: center !important;
+        }
+
+        .flex-row {
+            -ms-flex-direction: row !important;
+            flex-direction: row !important;
+        }
+
+        .d-flex {
+            display: -ms-flexbox !important;
+            display: flex !important;
+        }
+
+
+        .zoom {
+            padding: 1px;
+            background-color: white;
+            transition: transform .2s; /* Animation */
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+            .zoom:hover {
+                transform: scale(1.15); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+            }
+
+        h5.title:hover {
+            color: #288ad6;
+        }
+        form.form-asc-desc{
+            float: right;
+            
+        }
+        p.name {
+            font-weight: bold;
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 18px;
+        }
+        .card-title {
+            height: 2.5em; /* giới hạn chiều cao */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* số dòng cần hiển thị */
+            -webkit-box-orient: vertical;
+        }
+    </style>
+}
+
+<form asp-action="AdvertisementsByCategory" id="sort-form" method="get" class="form-asc-desc">
+    <label for="sort">Sắp xếp theo: </label>
+    <select id="sort" name="sort" onchange="document.getElementById('sort-form').submit();">
+        <option value="0">---  Chọn kiểu sắp xếp  ---</option>
+        <option value="price-desc">Giá cao đến thấp</option>
+        <option value="price-asc">Giá thấp đến cao</option>
+    </select>
+</form>
+
+<p class="name">(@ViewBag.AdvertisementCount) tin thuộc danh mục @Model.FirstOrDefault()?.Category?.name</p>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model.Where(n => n.status == true))
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <a asp-action="Details" asp-route-id="@item.advertisementId" class="text-center"><img class="zoom" style="max-height: 200px; overflow: hidden;" src="~/images/@Html.DisplayFor(modelItem => item.image)" title="@Html.DisplayFor(modelItem => item.title)" /></a>
+                    @if (item.featureItem == true)
+                    {
+                        <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>
+                    }
+                    @if (item.priceSale > 0)
+                    {
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+                    }
+                    <div class="card-body">
+                        <a class="text-dark" style="text-decoration:none;" asp-action="Details" asp-route-id="@item.advertisementId"><h5 class="card-title text-center title">@Html.DisplayFor(modelItem => item.title)</h5></a>
+                        <div class="product_info">
+                            @if (item.priceSale > 0)
+                            {
+                                <div class="product_price">@Html.DisplayFor(modelItem => item.priceSale)<span>@Html.DisplayFor(modelItem => item.price)</span></div>
+
+                            }
+                            else
+                            {
+                                <div class="product_price text-center">@Html.DisplayFor(modelItem => item.price)</div>
+
+                            }
+                        </div>
+                        <div class="text-warning">@Html.DisplayFor(modelItem => item.adverageRating) <i class="bi bi-star-fill"></i></div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+
+</div>
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="d-flex w-100 justify-content-center">
+        <Pagination page-count="@ViewBag.TotalPages" page-target="/home/@ViewBag.CategorySlug" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></Pagination>
+    </div>
+}
+
+@section Scripts{
+    <script>
+
+        const myCheckbox = document.getElementById("myCheckbox");
+        const myForm = document.getElementById("myForm");
+
+        myCheckbox.addEventListener("change", function () {
+            if (this.checked) {
+                myForm.submit();
+            }
+        });
+
+        const myCheckbox1 = document.getElementById("myCheckbox1");
+        const myForm = document.getElementById("myForm");
+
+        myCheckbox1.addEventListener("change", function () {
+            if (this.checked) {
+                myForm.submit();
+            }
+        });       
+
+    </script>
+}
+

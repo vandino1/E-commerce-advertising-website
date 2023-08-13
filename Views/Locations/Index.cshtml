@@ -1,0 +1,129 @@
+﻿@model IEnumerable<ADVERTISEMENT.Models.Location>
+
+@{
+    ViewData["Title"] = "Danh sách vị trí";
+    <style>
+        .product-count {
+            color: black;
+            padding: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+    </style>
+}
+
+<div class="col-sm-12">
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+</div>
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Tạo mới</a>
+</p>
+<span id="Message_create" class="d-none">@TempData["Message_create"]</span>
+<span id="Message_edit" class="d-none">@TempData["Message_edit"]</span>
+<span id="Message_delete" class="d-none">@TempData["Message_delete"]</span>
+<span id="Message_error" class="d-none">@TempData["Message_error"]</span>
+
+<hr />
+<form asp-controller="Locations" asp-action="Index" method="get">
+    <p>
+        Nhập nội dung: <input type="text" name="SearchString" placeholder="Tên vị trí" value="@ViewData["CurrentFilter"]" style="width:300px" />
+        <button class="btn btn-primary text-light" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button> |
+        <a href="@Url.Action("ExportToExcel")" class="btn btn-success"><i class="bi bi-file-excel"></i> Xuất Excel</a>
+</form>
+
+
+<form asp-controller="Locations" asp-action="DeleteMultiple" method="post">
+    <button type="submit" class="btn btn-danger"><i class="bi bi-x-octagon"></i> Xóa tất cả</button>
+    <hr />
+    <table class="table table-bordered table-hover text-center">
+        <thead>
+            <tr class="bg-info">
+                <th class="col-1"><input type="checkbox" id="checkAll" /></th>
+                <th class="col-1">STT</th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["nameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.First().name)</a>
+                </th>
+                <th>Sửa</th>
+                <th>Chi tiết</th>
+                <th>Xóa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Count() > 0)
+            {
+                int i = 1;
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><input class="checkbox" type="checkbox" name="selectedIds" value="@item.locationId" /></td>
+                        <td>@i</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td class="col-1">
+                            <a asp-action="Edit" asp-route-id="@item.locationId" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                        </td>
+                        <td class="col-1">
+                            <a asp-action="Details" asp-route-id="@item.locationId" class="btn btn-info"><i class="bi bi-sliders"></i></a>
+                        </td>
+                        <td class="col-1">
+                            <a asp-action="Delete" asp-route-id="@item.locationId" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</form>
+
+<div class="product-count">
+    <p>Tổng số bản ghi: @Model.Count()</p>
+</div>
+
+<div class="d-flex w-100 justify-content-end">
+    <Pagination page-count="@ViewBag.TotalPages" page-target="/locations" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></Pagination>
+</div>
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+            var message = $('#Message_create').text();
+            if (message !== '') {
+                toastr.success(message);
+            }
+
+        });
+        $(document).ready(function () {
+            var message = $('#Message_edit').text();
+            if (message !== '') {
+                toastr.info(message);
+            }
+
+        });
+        $(document).ready(function () {
+            var message = $('#Message_delete').text();
+            if (message !== '') {
+                toastr.warning(message);
+            }
+
+        });
+        $(document).ready(function () {
+            var message = $('#Message_error').text();
+            if (message !== '') {
+                toastr.error(message);
+            }
+
+        });
+
+        $(document).ready(function () {
+            $('#checkAll').click(function () {
+                $('.checkbox').prop('checked', $(this).prop('checked'));
+            });
+        });
+
+    </script>
+}

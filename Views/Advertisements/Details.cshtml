@@ -1,0 +1,140 @@
+﻿@model ADVERTISEMENT.Models.Advertisement
+
+@{
+    ViewData["Title"] = "Chi tiết quảng cáo";
+}
+<div class="nav">
+    <ol class="breadcrumb float-xl-left">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+</div>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.slug)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.slug)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.detailInfo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.detailInfo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.createDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.createDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.updateDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.updateDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.createBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.createBy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.keyword)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.keyword)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.postingFee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.postingFee)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.viewCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.viewCount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.featureItem)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.featureItem)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.priceSale)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.priceSale)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.isSale)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.isSale)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.brand)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.brand)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.adverageRating)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.adverageRating)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category.name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Location.name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.image)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="~/images/@Html.DisplayFor(model => model.image)" width="300" />
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.advertisementId" class="btn btn-warning">Cập nhật</a> |
+    <a asp-action="Index" class="btn btn-info">Trở lại danh sách</a>
+</div>

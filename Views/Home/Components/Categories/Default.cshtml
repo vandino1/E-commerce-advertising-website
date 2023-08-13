@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Category>
+
+<ul class="list-group">
+
+    <li class="list-group-item bg-primary ">
+        <strong><a class="navbar-expand-lg text-light"><i class="bi bi-list-task"></i> Danh Mục</a></strong>
+    </li>  
+</ul>
+
+@foreach (var item in Model)
+{
+    <li class="list-group-item">
+        <a class="nav-link text-dark " asp-controller="Home" asp-action="AdvertisementsByCategory" asp-route-categorySlug="@item.slug"><span><i class="bi bi-chevron-compact-right"></i>@item.name</span></a>
+    </li>
+   
+}

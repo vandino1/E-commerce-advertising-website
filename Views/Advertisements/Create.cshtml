@@ -1,0 +1,165 @@
+﻿@model ADVERTISEMENT.Models.Advertisement
+
+@{
+    ViewData["Title"] = "Thêm mới quảng cáo";
+}
+<div class="nav">
+    <ol class="breadcrumb float-xl-left">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="title" class="control-label"></label>
+                <input asp-for="title" class="form-control" placeholder="Tiêu đề quảng cáo" />
+                <span asp-validation-for="title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="detailInfo" class="control-label"></label>
+                <textarea rows="3" asp-for="detailInfo" class="form-control"></textarea>
+                <span asp-validation-for="detailInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="description" class="control-label"></label>
+                <textarea rows="6" asp-for="description" class="form-control"></textarea>
+                <span asp-validation-for="description" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label asp-for="createDate" class="control-label"></label>
+                    <input asp-for="createDate" class="form-control" />
+                    <span asp-validation-for="createDate" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <label asp-for="updateDate" class="control-label"></label>
+                    <input asp-for="updateDate" class="form-control" />
+                    <span asp-validation-for="updateDate" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <label asp-for="createBy" class="control-label"></label>
+                    <input asp-for="createBy" class="form-control" placeholder="Tên" />
+                    <span asp-validation-for="createBy" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <label asp-for="keyword" class="control-label"></label>
+                    <input asp-for="keyword" class="form-control" placeholder="Từ khóa tìm" />
+                    <span asp-validation-for="keyword" class="text-danger"></span>
+                </div>
+                
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-2">
+                    <label asp-for="status" class="control-label"></label>
+                    <br />
+                    <label class="control-label">
+                        <input asp-for="status" type="radio" class="radio" value="false" checked="checked" /> Ẩn
+                    </label>
+                    <label asp-for="status" class="control-label">
+                        <input asp-for="status" type="radio" class="radio" value="true" /> Hiển thị
+                    </label>
+                    <span asp-validation-for="status" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <label asp-for="featureItem" class="control-label"></label>
+                    <br />
+                    <label class="control-label">
+                        <input asp-for="featureItem" type="radio" class="radio" value="false" checked="checked" /> Chờ duyệt
+                    </label>
+                    <label asp-for="featureItem" class="control-label">
+                        <input asp-for="featureItem" type="radio" class="radio" value="true" /> Duyệt
+                    </label>
+                    <span asp-validation-for="featureItem" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <label asp-for="postingFee" class="control-label"></label>
+                    <input type="number" min="0" asp-for="postingFee" class="form-control" max="50000" value="0" />
+                    <span asp-validation-for="postingFee" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <label asp-for="price" class="control-label"></label>
+                    <input type="number" asp-for="price" class="form-control" max="50000000" value="0" />
+                    <span asp-validation-for="price" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <label asp-for="priceSale" class="control-label"></label>
+                    <input type="number" asp-for="priceSale" class="form-control" max="50000000" value="0" />
+                    <span asp-validation-for="priceSale" class="text-danger"></span>
+                    <br />
+                    <label asp-for="isSale" class="control-label"></label>
+                    <label class="control-label">
+                        <input asp-for="isSale" type="radio" class="radio" value="false" checked="checked" /> Không
+                    </label>
+                    <label asp-for="isSale" class="control-label">
+                        <input asp-for="isSale" type="radio" class="radio" value="true" /> Có
+                    </label>
+                    <span asp-validation-for="isSale" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="categoryId" class="control-label"></label>
+                    <select asp-for="categoryId" class="form-control" asp-items="ViewBag.categoryId">
+                        <option value="0">-- Chọn danh mục --</option>
+                    </select>
+                    <span asp-validation-for="categoryId" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <label asp-for="brand" class="control-label"></label>
+                    <input asp-for="brand" class="form-control" placeholder="Tên" />
+                    <span asp-validation-for="brand" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <label asp-for="locationId" class="control-label"></label>
+                    <select asp-for="locationId" class="form-control" asp-items="ViewBag.locationId">
+                        <option value="0">-- Chọn vị trí --</option>
+                    </select>
+                    <span asp-validation-for="locationId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                    <label asp-for="image" class="control-label"></label>
+                    <input type="file" name="file" id="image-input" onchange="previewImage()"class="form-control" />
+                    <span asp-validation-for="image" class="text-danger"></span>                      
+            </div>
+            <div class="form-group">
+                <img id="preview-image" src="~/images/carousel/upload_image.jpg"  alt="Preview Image" style="max-width:300px">  
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Tạo" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-info">Trở lại danh sách</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    CKEDITOR.replace("description");
+    CKEDITOR.replace("detailInfo");
+    function previewImage() {
+        var preview = document.querySelector('#preview-image');
+        var file = document.querySelector('#image-input').files[0];
+        var reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            preview.src = reader.result;          
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+}

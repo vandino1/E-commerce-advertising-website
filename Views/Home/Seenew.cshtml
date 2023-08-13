@@ -1,0 +1,163 @@
+﻿@model IEnumerable<ADVERTISEMENT.Models.Customer>
+
+
+@{
+    ViewData["Title"] = "Xem tin đã lưu";
+
+    <style>
+        .sanpham_box .anh {
+            max-height: 150px;
+            overflow: hidden;
+        }
+
+        .product_price span {
+            font-size: 12px;
+            margin-left: 10px;
+            color: #b5aec4;
+            text-decoration: line-through;
+        }
+
+        .product_price {
+            font-size: 18px;
+            color: red;
+            font-weight: bold;
+        }
+
+        .product_info {
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .product_bubble {
+            position: absolute;
+            top: 1px;
+            width: 50px;
+            height: 25px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            color: white;
+            font-size: 12px;
+        }
+
+        .product_bubble_right {
+            right: 5px;
+        }
+
+        .product_bubble_left {
+            left: 5px;
+        }
+
+        .product_bubble_red {
+            background: #fe4c50;
+        }
+
+        .d-flex {
+            display: -ms-flexbox !important;
+            display: flex !important;
+        }
+
+        .flex-column {
+            -ms-flex-direction: column !important;
+            flex-direction: column !important;
+        }
+
+        .align-items-center {
+            -ms-flex-align: center !important;
+            align-items: center !important;
+        }
+
+        .product_bubble_green {
+            background: green;
+        }
+
+        h2.color_sale {
+            color: #aa7e32;
+        }
+
+        h2.new {
+            color: blue;
+        }
+
+        h2.most {
+            color: green;
+        }
+
+        h2.tag {
+            border-bottom: 2px solid green;
+            width: 250px;
+        }
+
+        .zoom {
+            padding: 1px;
+            background-color: white;
+            transition: transform .2s; /* Animation */
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+            .zoom:hover {
+                transform: scale(1.15); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+            }
+
+        h5.title:hover {
+            color: #288ad6;
+        }
+        .card-title {
+            height: 2.5em; /* giới hạn chiều cao */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* số dòng cần hiển thị */
+            -webkit-box-orient: vertical;
+        }
+    </style>
+}
+
+<div class="nav">
+    <ol class="breadcrumb float-xl-left">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+</div>
+<h2 class="tag">Quản lý tin lưu </h2><span>Số tin lưu: (@ViewBag.totalcustomers)</span>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <a asp-action="Details" asp-route-id="@item.advertisementId" class="text-center"><img class="zoom" style="max-height: 200px; overflow: hidden;" src="~/images/@Html.DisplayFor(modelItem => item.Advertisement.image)" title="@Html.DisplayFor(modelItem => item.Advertisement.title)" /></a>
+                    @if (item.Advertisement.featureItem == true)
+                    {
+                        <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>
+                    }
+                    @if (item.Advertisement.priceSale > 0)
+                    {
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+                    }
+                    <div class="card-body">
+                        <a class="text-dark" style="text-decoration:none;" asp-action="Details" asp-route-id="@item.advertisementId"><h5 class="card-title text-center title">@Html.DisplayFor(modelItem => item.Advertisement.title)</h5></a>
+                        <div class="product_info">
+                            @if (item.Advertisement.priceSale > 0)
+                            {
+                                <div class="product_price">@Html.DisplayFor(modelItem => item.Advertisement.priceSale)<span>@Html.DisplayFor(modelItem => item.Advertisement.price)</span></div>
+
+                            }
+                            else
+                            {
+                                <div class="product_price text-center">@Html.DisplayFor(modelItem => item.Advertisement.price)</div>
+
+                            }
+                        </div>
+                        <div class="text-warning">@Html.DisplayFor(modelItem => item.Advertisement.adverageRating) <i class="bi bi-star-fill"></i></div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+

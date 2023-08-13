@@ -1,0 +1,666 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<ADVERTISEMENT.Models.Advertisement>
+
+@{
+    ViewData["Title"] = "Gợi ý hôm nay";
+    <style>    
+        .sanpham_box .anh {
+            max-height: 150px;
+            overflow: hidden;
+        }
+
+        .product_price span {
+            font-size: 12px;
+            margin-left: 10px;
+            color: #b5aec4;
+            text-decoration: line-through;
+        }
+
+        .product_price {
+            font-size: 18px;
+            color: red;
+            font-weight: bold;
+        }
+
+        .product_info {
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .product_bubble {
+            position: absolute;
+            top: 1px;
+            width: 50px;
+            height: 25px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            color: white;
+            font-size: 12px;
+        }
+
+        .product_bubble_right {
+            right: 5px;
+        }
+
+        .product_bubble_left {
+            left: 5px;
+        }
+
+        .product_bubble_red {
+            background: #fe4c50;
+        }
+
+        .d-flex {
+            display: -ms-flexbox !important;
+            display: flex !important;
+        }
+
+        .flex-column {
+            -ms-flex-direction: column !important;
+            flex-direction: column !important;
+        }
+
+        .align-items-center {
+            -ms-flex-align: center !important;
+            align-items: center !important;
+        }
+
+        .product_bubble_green {
+            background: green;
+        }
+
+        .section_title::after {
+            display: block;
+            position: absolute;
+            top: calc(100% + 1px);
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            -moz-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            transform: translateX(-50%);
+            width: 60px;
+            height: 5px;
+            background: #fe4c50;
+            content: '';
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        h2.color_sale {
+            color: #aa7e32;
+        }
+
+        h2.new {
+            color: blue;
+        }
+
+        h2.most {
+            color: green;
+        }
+
+        .benefit_row {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .benefit_col {
+            margin-bottom: 15px;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .benefit_item {
+            height: 100px;
+            background: #f3f3f3;
+            border-right: solid 1px #FFFFFF;
+            padding-left: 25px;
+        }
+
+        .align-items-center {
+            -ms-flex-align: center !important;
+            align-items: center !important;
+        }
+
+        .flex-row {
+            -ms-flex-direction: row !important;
+            flex-direction: row !important;
+        }
+
+        .d-flex {
+            display: -ms-flexbox !important;
+            display: flex !important;
+        }
+
+        .benefit_icon i {
+            font-size: 30px;
+            color: #fe4c50;
+        }
+
+        .benefit_content {
+            padding-left: 22px;
+        }
+
+            .benefit_content h6 {
+                text-transform: uppercase;
+                line-height: 18px;
+                font-weight: 500;
+                margin-bottom: 0px;
+            }
+
+            .benefit_content p {
+                font-size: 12px;
+                line-height: 18px;
+                margin-bottom: 0px;
+                color: #51545f;
+            }
+
+        .zoom {
+            padding: 1px;
+            background-color: white;
+            transition: transform .2s; /* Animation */
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+            .zoom:hover {
+                transform: scale(1.15); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+            }
+
+        h5.title:hover {
+            color: #288ad6;
+        }
+
+        .checkbox-container {
+            display: inline-block;
+        }
+
+            .checkbox-container form {
+                display: inline-block;
+                margin-right: 20px;
+            }
+
+                .checkbox-container form:last-child {
+                    margin-right: 0;
+                }
+
+        label.text:hover {
+            color: blue;
+        }
+        button.compare-button {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px solid #2f80ed;   
+            background-color: #2f80ed;
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;           
+            float: right;
+            border-radius: 10px;
+        }
+            button.compare-button:hover {
+                background-color: #fff;
+                color: #2f80ed;
+            }
+            button.delete:hover{
+                background-color:red;
+                color: #fff;
+
+            }
+
+        button.delete {
+            display: inline-block;
+            padding: 10px 20px;
+            color: red;
+            border: none;
+            font-size: 18px;
+            text-decoration: none;
+            float: right;
+            text-align: center;
+            border-radius: 10px;
+        }       
+        div.Range a {
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: 1px solid #4a90e2;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+            /* Thiết lập hiệu ứng hover khi rê chuột qua thẻ <a> */
+            div.Range a:hover {
+                background: white;
+                color: #4a90e2;
+            }
+
+            /* Thiết lập hiệu ứng active khi click vào thẻ <a> */
+            div.Range a:active {
+                background: #999;
+                color: #fff;
+            }
+
+        /* Thiết lập hiệu ứng visited cho các thẻ <a> đã được click trước đó */
+        div Range a:visited {
+            /* color: #666;*/
+            color: black;
+        }
+        .call {
+            position: fixed;
+            bottom: 30px;
+            right: 10px;
+            z-index: 999999;
+            border-radius: 10px 10px;
+        }
+
+        div.compare {
+            color: #2f80ed;
+            font-size: 16px;
+            line-height: 16px;
+            margin-left: 10px;
+        }
+        .card-title {
+            height: 2.5em; /* giới hạn chiều cao */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* số dòng cần hiển thị */
+            -webkit-box-orient: vertical;
+        }
+ 
+    </style>
+}
+<span id="Message_create" class="d-none">@TempData["Message_create"]</span>
+
+<div class="call">
+    <button class="compare-button" id="compare-button">So sánh ngay</button>
+    <br /> 
+    <button class="delete" id="delete-all-ads-button" onclick="clearSelectedAds()">Xóa tất cả tin</button>
+</div>
+
+<div class="nav">
+    <ol class="breadcrumb float-xl-left">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+</div>
+
+<div class="Range">
+    <a href="/Home/FilterByPriceRange?priceRange=1">Dưới 2 triệu</a>
+    <a href="/Home/FilterByPriceRange?priceRange=2">Dưới 10 triệu</a>
+    <a href="/Home/FilterByPriceRange?priceRange=3">Từ 10-20 triệu</a>
+    <a href="/Home/FilterByPriceRange?priceRange=4">Trên 20 triệu</a>
+</div>
+<br />
+@if (Model.Count() > 0)
+{
+    <h6>Hiện có <strong>@ViewBag.AdvertisementCount</strong> tin được duyệt</h6>
+}
+
+
+<div class="checkbox-container">
+    <form asp-action="SortByPriceAscending" id="myForm">
+        <label class="text">
+            <input type="checkbox" value="true" id="myCheckbox" name="myCheckbox" />
+            Giá tăng dần
+        </label>
+    </form>
+    <form asp-action="SortByPriceDescending" id="myForm1">
+        <label class="text">
+            <input type="checkbox" value="true" id="myCheckbox1" name="myCheckbox1" />
+            Giá giảm dần
+        </label>
+    </form>
+
+    <form asp-action="SortByPriceSale" id="myForm2">
+        <label class="text">
+            <input type="checkbox" value="true" id="myCheckbox2" name="myCheckbox2" />
+            Giá khuyến mãi
+        </label>
+    </form>
+    <form asp-action="SortByPostNew" id="myForm3">
+        <label class="text">
+            <input type="checkbox" value="true" id="myCheckbox3" name="myCheckbox3" />
+            Mới
+        </label>
+    </form>
+</div>
+
+<form asp-controller="Home" asp-action="FilterByPrice" method="get">
+    <label>Phạm vi giá:</label>
+    <input type="number" name="minPrice" placeholder="Giá tối thiểu">
+    <input type="number" name="maxPrice" placeholder="Giá tối đa">
+    <button type="submit">Lọc theo giá</button>
+</form>
+
+<div class="col text-center">
+    <div class="section_title">
+        <h2 class="most">TIN NỔI BẬT</h2>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model.OrderByDescending(n=>n.advertisementId).Where(n => n.featureItem && n.status == true).Take(3))
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <a asp-action="Details" asp-route-id="@item.advertisementId" class="text-center"><img class="zoom" style="max-height: 200px; overflow: hidden;" src="~/images/@Html.DisplayFor(modelItem => item.image)" title="@Html.DisplayFor(modelItem => item.title)" /></a>
+                    @if (item.featureItem == true)
+                    {
+                        <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>
+                    }
+                    <div class="card-body">
+                        <a class="text-dark" style="text-decoration:none;" asp-action="Details" asp-route-id="@item.advertisementId"><h5 class="card-title text-center title">@Html.DisplayFor(modelItem => item.title)</h5></a>
+                        <div class="product_info">
+                            @if (item.priceSale > 0)
+                            {
+                                <div class="product_price">@Html.DisplayFor(modelItem => item.priceSale)<span>@Html.DisplayFor(modelItem => item.price)</span></div>
+                            }
+                            else
+                            {
+                                <div class="product_price text-center">@Html.DisplayFor(modelItem => item.price)</div>
+                            }
+                        </div>
+                        <div class="text-warning">@Html.DisplayFor(modelItem => item.adverageRating) <i class="bi bi-star-fill"></i></div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+    <div class="col text-center">
+        <div class="section_title">
+            <h2 class="new">TIN ĐĂNG MỚI NHẤT</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model.OrderByDescending(n => n.price).Where(n => n.status == true))
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <a asp-action="Details" asp-route-id="@item.advertisementId" class="text-center"><img class="zoom" style="max-height: 200px; overflow: hidden;" src="~/images/@Html.DisplayFor(modelItem => item.image)" /></a>
+                    @if (item.featureItem == true)
+                    {
+                        <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>
+                    }
+                    @if (item.priceSale > 0)
+                    {
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+                    }
+                    <div class="card-body">
+                        <a class="text-dark" style="text-decoration:none;" asp-action="Details" asp-route-id="@item.advertisementId"><h5 class="card-title text-center title">@Html.DisplayFor(modelItem => item.title)</h5></a>
+                        <div class="product_info">
+                            @if (item.priceSale > 0)
+                            {
+                                <div class="product_price">@Html.DisplayFor(modelItem => item.priceSale)<span>@Html.DisplayFor(modelItem => item.price)</span></div>
+
+                            }
+                            else
+                            {
+                                <div class="product_price text-center">@Html.DisplayFor(modelItem => item.price)</div>
+
+                            }
+                        </div>
+                        <div class="text-warning">@Html.DisplayFor(modelItem => item.adverageRating) <i class="bi bi-star-fill"></i></div>
+                    </div>
+                    <div class="compare">
+                        <input id="ad-@item.advertisementId" type="checkbox" name="selectedAds" value="@item.advertisementId" />
+                        <label for="ad-@item.advertisementId" class="added-to-compare">So sánh</label>
+                    </div>
+
+
+                </div>
+            </div>
+        }
+        <div class="container">
+            <div class="row benefit_row">
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="bi bi-bicycle"></i></div>
+                        <div class="benefit_content">
+
+                            <h6>Miễn phí vận chuyển</h6>
+                            <p>Bị thay đổi trong một số hình thức</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="bi bi-cash-coin"></i></div>
+                        <div class="benefit_content">
+                            <h6>Cách giao hàng</h6>
+                            <p>Sử dụng internet</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="bi bi-arrow-counterclockwise"></i></div>
+                        <div class="benefit_content">
+                            <h6>45 ngày đổi trả</h6>
+                            <p>Có thể đổi trả trong thời gian giới hạn</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="bi bi-clock"></i></div>
+                        <div class="benefit_content">
+                            <h6>Mở cả tuần</h6>
+                            <p>8AM - 09PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col text-center">
+            <div class="section_title">
+                <h2 class="color_sale">KHUYẾN MÃI GIÁ SỐC</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model.OrderByDescending(n => n.price).Where(n => n.isSale && n.status == true).Take(3))
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <a asp-action="Details" asp-route-id="@item.advertisementId" class="text-center"><img class="zoom" style="max-height: 200px; overflow: hidden;" src="~/images/@Html.DisplayFor(modelItem => item.image)" /></a>
+                    @if (item.priceSale > 0)
+                    {
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+                    }
+                    <div class="card-body">
+                        <a class="text-dark" style="text-decoration:none;" asp-action="Details" asp-route-id="@item.advertisementId"><h5 class="card-title text-center title">@Html.DisplayFor(modelItem => item.title)</h5></a>
+                        <div class="product_info">
+                            @if (item.priceSale > 0)
+                            {
+                                <div class="product_price">@Html.DisplayFor(modelItem => item.priceSale)<span>@Html.DisplayFor(modelItem => item.price)</span></div>
+
+                            }
+                            else
+                            {
+                                <div class="product_price text-right">@Html.DisplayFor(modelItem => item.price)</div>
+
+                            }
+                        </div>
+                        <div class="text-warning">@Html.DisplayFor(modelItem => item.adverageRating) <i class="bi bi-star-fill"></i></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="d-flex w-100 justify-content-center">
+    <Pagination page-count="@ViewBag.TotalPages" page-target="/home" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></Pagination>
+</div>
+
+@section Scripts{
+    <script>
+        //Lấy nội dung văn bản của một thẻ có `id` là "Message_create",
+        //kiểm tra xem xâu văn bản có rỗng hay không.Nếu không rỗng,
+        //`toastr.success()` sẽ được gọi để hiển thị một thông báo thành công.
+
+        $(document).ready(function () {
+            var message = $('#Message_create').text();
+            if (message !== '') {
+                toastr.success(message);
+            }
+
+        });
+        //hai biến `myCheckbox` và `myForm` được khai báo sử dụng phương thức `getElementById()` 
+        //để lấy tham chiếu đến một checkbox và một biểu mẫu(form) tương ứng
+        const myCheckbox = document.getElementById("myCheckbox");
+        const myForm = document.getElementById("myForm");
+        //`myCheckbox` được gán cho sự kiện `change`
+        //Khi kích hoạt hàm được truyền vào `addEventListener()` sẽ được gọi. 
+        myCheckbox.addEventListener("change", function () {
+        //Nếu checkbox được chọn, thì biểu mẫu (`myForm`) được (submit) và dữ liệu được gửi đến máy chủ để xử lý.
+            if (this.checked) {
+                myForm.submit();
+            }
+        });
+
+        const myCheckbox1 = document.getElementById("myCheckbox1");
+        const myForm1 = document.getElementById("myForm1");
+
+        myCheckbox1.addEventListener("change", function () {
+            if (this.checked) {
+                myForm1.submit();
+            }
+        });
+        const myCheckbox2 = document.getElementById("myCheckbox2");
+        const myForm2 = document.getElementById("myForm2");
+
+        myCheckbox2.addEventListener("change", function () {
+            if (this.checked) {
+                myForm2.submit();
+            }
+        });
+        const myCheckbox3 = document.getElementById("myCheckbox3");
+        const myForm3 = document.getElementById("myForm3");
+
+        myCheckbox3.addEventListener("change", function () {
+            if (this.checked) {
+                myForm3.submit();
+            }
+        });
+
+        $(document).ready(function () {
+            // Lắng nghe sự kiện submit form
+            $('#filter-form').submit(function (e) {
+                // Ngăn chặn hành động mặc định của form
+                e.preventDefault();
+
+                // Lấy giá trị của khoảng giá trị được chọn
+                var minPrice = $('input[name="minPrice"]').val();
+                var maxPrice = $('input[name="maxPrice"]').val();
+
+                // Gửi AJAX request để lọc các mục theo khoảng giá trị
+                $.ajax({
+                    url: '/items/filter',
+                    method: 'POST',
+                    data: {
+                        minPrice: minPrice,
+                        maxPrice: maxPrice
+                    },
+                    success: function (response) {
+                        // Cập nhật danh sách mục với kết quả trả về từ server
+                        $('#item-list').html(response);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+        //So sánh tin quảng cáo bằng javascript
+        var selectedAds = [];
+
+        $('input[type=checkbox][name=selectedAds]').change(function () {
+         //Id quảng cáo tương ứng sẽ được thêm vào mảng `selectedAds` thông qua phương thức `push()`
+            if (this.checked) {
+                selectedAds.push(parseInt(this.value));
+            } else {
+         //Id của quảng cáo tương ứng sẽ được xóa khỏi mảng `selectedAds` thông qua phương thức `splice()`
+         //Phương thức `indexOf()` được sử dụng để tìm kiếm vị trí của id quảng cáo đó trong mảng `selectedAds`
+                selectedAds.splice(selectedAds.indexOf(parseInt(this.value)), 1);
+            }
+        });
+
+        $('#compare-button').click(function () {
+            //Nếu số lượng này lớn hơn hoặc bằng 4(vì có tối đa 3 quảng cáo được chọn để so sánh)
+            if (selectedAds.length >= 4) {
+                alert("Cho phép so sánh tối đa 3 quảng cáo!");
+                return;
+            }
+       //hàm sẽ sử dụng thuộc tính `window.location.href`để chuyển hướng trang web đến địa chỉ
+       //được chỉ định(`'/Home/Compare?ids='` + `selectedAds.join(',')`).
+       //id quảng cáo trong mảng`selectedAds` nối thành một chuỗi duy nhất qua phương thức`join()` với dấu phẩy làm phân cách.
+            if (selectedAds.length > 0 && selectedAds.length >= 2) {
+                window.location.href = '/Home/Compare?ids=' + selectedAds.join(',');
+            } else {
+                alert("Vui lòng chọn ít nhất 2 quảng cáo để so sánh!");
+            }
+
+        });
+        //Thay đổi textcheckbox
+        // Lấy tất cả các checkbox và label trong danh sách quảng cáo
+        var checkboxes = document.querySelectorAll('input[name="selectedAds"]');
+        var labels = document.querySelectorAll('label[for^="ad-"]');
+
+        // Lắng nghe sự kiện "change" của các checkbox
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function (event) {
+                // Lấy label tương ứng của checkbox
+                var label = document.querySelector('label[for="' + event.target.id + '"]');
+
+                // Nếu checkbox được chọn, đổi nội dung của label thành "Đã thêm so sánh"
+                if (event.target.checked) {
+                    label.textContent = 'Đã thêm so sánh';
+                }
+                // Ngược lại, đổi nội dung của label thành "So sánh"
+                else {
+                    label.textContent = 'So sánh';
+                }
+            });
+        });
+        //Xóa tất cả các checkbox
+        //Khi click vào sẽ kiểm tra xem các checkbox được chọn xác định bởi một thuộc tính "selectedAds" hay chưa.
+        //bất kỳ checkbox nào đã được chọn, thì được xoá bỏ bằng phương thức `prop()`đặt thuộc tính "checked"thành `false`
+        $("#delete-all-ads-button").click(function () {
+            var selectedAds = $("input[name='selectedAds']");
+            if (selectedAds.filter(":checked").length > 0) {
+                selectedAds.prop('checked', false);
+        //Cập nhật lable so sánh và thông báo "Đã xóa các check thành công!".
+                $('label.added-to-compare').text('So sánh');
+                alert("Đã xóa các check thành công!");
+            } else {
+                alert("Vui lòng chọn ít nhất một quảng cáo để xóa!");
+            }
+        });
+        //hàm `clearSelectedAds()`, nếu `selectedAds` là một mảng, thì phương thức `splice()` 
+        //sử dụng để loại bỏ tất cả các phần tử khỏi`selectedAds` bằng cách đặt độ dài của nó thành 0.
+        function clearSelectedAds() {
+            selectedAds.splice(0, selectedAds.length);         
+        }
+
+    </script>
+}
+
+
+
